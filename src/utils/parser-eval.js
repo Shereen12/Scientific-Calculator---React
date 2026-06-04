@@ -1,41 +1,45 @@
 function evaluateSquareRoot(expression) {
-  let resultExpression = "";
+  let result = "";
   let stack = [];
-  let expressions = [];
+  let innerExpression = "";
+  let j = null;
   function parse(expression, i) {
+    j = i;
     if (expression[i] == "√") {
-      resultExpression += expression[i];
-      parse(expression, i + 1);
+      result = Math.sqrt(parse(expression, i + 1));
     } else if (expression[i] >= "0" && expression[i] <= "9") {
-      resultExpression += expression[i];
+      innerExpression += expression[i];
       if (stack.length) parse(expression, i + 1);
+      else result = evaluate(innerExpression);
     } else if (expression[i] == "(") {
       stack.push(expression[i], i + 1);
-      resultExpression += expression[i];
+      innerExpression += expression[i];
       parse(expression, i + 1);
     } else if ("+-/*%".includes(expression[i])) {
-      resultExpression += expression[i];
+      innerExpression += expression[i];
       parse(expression, i + 1);
     } else if (expression[i] == ")") {
       if (stack.length === 0) {
         return;
       } else {
         stack.pop();
-        resultExpression += expression[i];
+        innerExpression += expression[i];
+        result = evaluate(innerExpression);
       }
     }
 
-    return resultExpression;
+    return result;
   }
 
   for (let i = 0; i < expression.length; i++) {
     if (expression[i] == "√") {
-      expressions.push(parse(expression, i));
-      resultExpression = "";
+      expression =
+        expression.slice(0, i) + parse(expression, i) + expression.slice(j + 1);
     } else continue;
   }
+  console.log(expression);
 
-  return expressions;
+  return expression;
 }
 
 function infixToPostfix(expression) {
@@ -43,9 +47,11 @@ function infixToPostfix(expression) {
   let output = [];
   let operatorStack = [];
 
-  console.log(evaluateSquareRoot(expression));
+  expression = evaluateSquareRoot(expression);
   // Tokenize the expression
   let tokens = expression.match(/\d+\.?\d*|[+\-*%/()]/g);
+
+  //console.log(tokens);
 
   for (let token of tokens) {
     if (!isNaN(token)) {
@@ -115,5 +121,4 @@ function evaluate(expression) {
     throw new Error("Invalid expression");
   }
 }
-
 export { evaluate };
