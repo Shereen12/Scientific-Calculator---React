@@ -7,9 +7,11 @@ function evaluateSquareRoot(expression) {
     j = i;
     if (expression[i] == "√") {
       result = Math.sqrt(parse(expression, i + 1));
-    } else if (expression[i] >= "0" && expression[i] <= "9") {
+    }
+     else if (expression[i] >= "0" && expression[i] <= "9") {
       innerExpression += expression[i];
       if (stack.length) parse(expression, i + 1);
+      if(expression[i + 1] >= "0" && expression[i + 1] <= "9") parse(expression, i + 1);
       else result = evaluate(innerExpression);
     } else if (expression[i] == "(") {
       stack.push(expression[i], i + 1);
@@ -27,7 +29,7 @@ function evaluateSquareRoot(expression) {
         result = evaluate(innerExpression);
       }
     }
-
+    
     return result;
   }
 
@@ -37,21 +39,23 @@ function evaluateSquareRoot(expression) {
         expression.slice(0, i) + parse(expression, i) + expression.slice(j + 1);
     } else continue;
   }
-  console.log(expression);
 
   return expression;
 }
 
+
+
 function infixToPostfix(expression) {
-  let precedence = { "+": 1, "-": 1, "*": 2, "/": 2, "%": 2 };
+  let precedence = { "+": 1, "-": 1, "*": 2, "/": 2, "%": 2, '²': 3 };
   let output = [];
   let operatorStack = [];
 
   expression = evaluateSquareRoot(expression);
-  // Tokenize the expression
-  let tokens = expression.match(/\d+\.?\d*|[+\-*%/()]/g);
 
-  //console.log(tokens);
+  // Tokenize the expression
+  let tokens = expression.match(/\d+\.?\d*|[+\-*%/()²]/g);
+
+  console.log(tokens);
 
   for (let token of tokens) {
     if (!isNaN(token)) {
@@ -89,12 +93,13 @@ function evaluate(expression) {
   try {
     let stack = [];
     let postfix = infixToPostfix(expression);
-    for (let token of postfix) {
+    console.log(postfix);
+    for (let token of postfix) {    
       if (!isNaN(token)) {
         stack.push(parseFloat(token));
-      } else {
+      } else{
         let b = stack.pop();
-        let a = stack.pop();
+        let a = stack.length > 0 ? stack.pop() : null;
         switch (token) {
           case "+":
             stack.push(a + b);
@@ -111,6 +116,10 @@ function evaluate(expression) {
           case "%":
             stack.push(a % b);
             break;
+          case "²":
+            stack.push(Math.pow(b, 2));
+            break;
+         
         }
       }
     }

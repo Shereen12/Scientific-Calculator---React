@@ -54,6 +54,13 @@ function Calculator() {
         >
           √
         </button>
+
+        <button
+          className="bg-blue-950 rounded-2xl h-16 m-2 text-white hover:bg-gray-200 hover:text-blue-950"
+          onClick={(e) => writeDigit(e, "²")}
+        >
+          x²
+        </button>
         <button
           className="bg-blue-950 rounded-2xl h-16 m-2 text-white hover:bg-gray-200 hover:text-blue-950"
           onClick={(e) => writeDigit(e, "(")}
