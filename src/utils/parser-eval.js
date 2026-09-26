@@ -50,7 +50,7 @@ function infixToPostfix(expression) {
   let output = [];
   let operatorStack = [];
 
-  expression = evaluateSquareRoot(expression);
+  expression = evaluateSquareRoot(expression); 
 
   // Tokenize the expression
   let tokens = expression.match(/\d+\.?\d*|[+\-*%/()²]/g);

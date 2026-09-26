@@ -1,1 +1,12 @@
 @import "tailwindcss";
+
+
+.button{
+    @apply bg-gray-100 rounded-2xl h-16 m-2  hover:bg-gray-200 text-blue-950 cursor-pointer;
+}
+
+@media (max-width: 768px) {
+    .mobile-view {
+        @apply p-0;
+    }
+}
