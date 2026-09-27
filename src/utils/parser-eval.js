@@ -1,61 +1,12 @@
-function evaluateSquareRoot(expression) {
-  let result = "";
-  let stack = [];
-  let innerExpression = "";
-  let j = null;
-  function parse(expression, i) {
-    j = i;
-    if (expression[i] == "√") {
-      result = Math.sqrt(parse(expression, i + 1));
-    }
-     else if (expression[i] >= "0" && expression[i] <= "9") {
-      innerExpression += expression[i];
-      if (stack.length) parse(expression, i + 1);
-      if(expression[i + 1] >= "0" && expression[i + 1] <= "9") parse(expression, i + 1);
-      else result = evaluate(innerExpression);
-    } else if (expression[i] == "(") {
-      stack.push(expression[i], i + 1);
-      innerExpression += expression[i];
-      parse(expression, i + 1);
-    } else if ("+-/*%".includes(expression[i])) {
-      innerExpression += expression[i];
-      parse(expression, i + 1);
-    } else if (expression[i] == ")") {
-      if (stack.length === 0) {
-        return;
-      } else {
-        stack.pop();
-        innerExpression += expression[i];
-        result = evaluate(innerExpression);
-      }
-    }
-    
-    return result;
-  }
-
-  for (let i = 0; i < expression.length; i++) {
-    if (expression[i] == "√") {
-      expression =
-        expression.slice(0, i) + parse(expression, i) + expression.slice(j + 1);
-    } else continue;
-  }
-
-  return expression;
-}
-
-
-
 function infixToPostfix(expression) {
-  let precedence = { "+": 1, "-": 1, "*": 2, "/": 2, "%": 2, '²': 3 };
+  let precedence = { "+": 1, "-": 1, "*": 2, "/": 2, "%": 2, '²': 3, '√': 3 };
   let output = [];
   let operatorStack = [];
 
-  expression = evaluateSquareRoot(expression); 
+  //expression = evaluateSquareRoot(expression); 
 
   // Tokenize the expression
-  let tokens = expression.match(/\d+\.?\d*|[+\-*%/()²]/g);
-
-  console.log(tokens);
+  let tokens = expression.match(/\d+\.?\d*|[+\-*%/()²√]/g);
 
   for (let token of tokens) {
     if (!isNaN(token)) {
@@ -93,33 +44,55 @@ function evaluate(expression) {
   try {
     let stack = [];
     let postfix = infixToPostfix(expression);
-    console.log(postfix);
+    console.log("Postfix:", postfix);
     for (let token of postfix) {    
       if (!isNaN(token)) {
         stack.push(parseFloat(token));
       } else{
-        let b = stack.pop();
-        let a = stack.length > 0 ? stack.pop() : null;
+        let a, b;
         switch (token) {
           case "+":
+            b = stack.pop();
+             a = stack.length > 0 ? stack.pop() : null;
             stack.push(a + b);
             break;
           case "-":
+             b = stack.pop();
+             a = stack.length > 0 ? stack.pop() : null;
             stack.push(a - b);
             break;
           case "*":
+             b = stack.pop();
+             a = stack.length > 0 ? stack.pop() : null;    
             stack.push(a * b);
             break;
           case "/":
+             b = stack.pop();
+             a = stack.length > 0 ? stack.pop() : null;
+            if (b === 0) {
+              throw new Error("Division by zero");
+            }
             stack.push(a / b);
             break;
           case "%":
+             b = stack.pop();
+             a = stack.length > 0 ? stack.pop() : null;
+            if (b === 0) {
+              throw new Error("Division by zero");
+            }
             stack.push(a % b);
             break;
           case "²":
+             b = stack.pop();
+            
             stack.push(Math.pow(b, 2));
             break;
-         
+          case "√":
+             b = stack.pop();
+            stack.push(Math.sqrt(b));
+            break;
+          default:
+            throw new Error("Invalid operator");
         }
       }
     }
