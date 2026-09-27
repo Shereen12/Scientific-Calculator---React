@@ -20,8 +20,12 @@ function Calculator() {
     setExpression((prev) => prev + digit);
   };
 
-  const remove = () => {
+  const removeAll = () => {
     setExpression("");
+  };
+
+  const remove = () => {
+    setExpression((prev) => prev.slice(0, -1));
   };
 
   return (
@@ -36,13 +40,21 @@ function Calculator() {
           />
         </div>
 
-        <div className="grid grid-cols-3">
+        <div className="grid grid-cols-2">
+          <button
+            className="button"
+            onClick={removeAll}
+          >
+            C
+          </button>
           <button
             className="button"
             onClick={remove}
           >
-            C
+            del
           </button>
+        </div>
+        <div className="grid grid-cols-3 gap-2">
           <button
             className="button"
             onClick={(e) => writeDigit(e, "3.141592654")}
@@ -171,7 +183,8 @@ function Calculator() {
             .
           </button>
           <button
-            className="button"
+            className="button" 
+            style={{ gridColumn:"3", backgroundColor: "#e9d5ff", color: "oklch(28.2% 0.091 267.935)" }}
             onClick={evaluateExpression}
           >
             =
