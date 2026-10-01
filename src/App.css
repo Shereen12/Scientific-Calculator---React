@@ -2,7 +2,23 @@
 
 
 .button{
-    @apply bg-gray-100 rounded-2xl h-16 m-2  hover:bg-gray-200 text-blue-950 cursor-pointer;
+    @apply bg-gray-100 rounded-2xl h-16 m-2  hover:bg-gray-200 text-blue-950 cursor-pointer
+}
+
+.outer-circle{
+    clip-path: circle(105px);
+    background-color: #050404;
+    width: 100%;
+    height: 100%;
+    margin: auto;
+}
+
+.inner-circle{
+    clip-path: circle(100px);
+    background-color: #ffffff;
+    width: 100%;
+    height: 100%;
+    margin: auto;
 }
 
 @media (max-width: 768px) {

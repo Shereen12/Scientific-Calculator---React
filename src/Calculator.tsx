@@ -29,8 +29,7 @@ function Calculator() {
   };
 
   return (
-    <div className="bg-linear-to-bl from-pink-200 to-blue-200 grid p-4 h-screen sm:p-0">
-      <div className="lg:w-1/4 w-100 m-auto align-middle border-0 rounded-2xl bg-white p-6 shadow-lg">
+      <div className="col-1 align-middle border-0 rounded-2xl bg-white p-6 shadow-lg">
         <div>
           <input
             type="text"
@@ -184,14 +183,13 @@ function Calculator() {
           </button>
           <button
             className="button" 
-            style={{ gridColumn:"3", backgroundColor: "#e9d5ff", color: "oklch(28.2% 0.091 267.935)" }}
+            style={{ gridColumn:"3", backgroundColor: "oklch(28.2% 0.091 267.935)", color: "white" }}
             onClick={evaluateExpression}
           >
             =
           </button>
         </div>
       </div>
-    </div>
   );
 }
 
